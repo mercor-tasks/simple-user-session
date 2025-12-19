@@ -12,6 +12,7 @@ Following things must be taken into accout while building the features.
 
 - If user is not logged in, it should load the requested page (based on login or register)
 - If user is logged in, it should redirect to home page
+- Upon successful registration or login, the user should be redirected to the home page
 
 ###### Logout button click should behave like below
 

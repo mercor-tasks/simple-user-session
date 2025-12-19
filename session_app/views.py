@@ -3,8 +3,10 @@ from django.shortcuts import render
 from django.views import View
 
 from utils.decorators import handle_exception
+from utils.utils import sha256_string
 
-from .session_manager import get_user_in_session
+from .models import SiteUser
+from .session_manager import add_user_to_session, get_user_in_session
 
 
 class HomeView(View):
@@ -22,7 +24,38 @@ class HomeView(View):
 
 
 class RegisterView(View):
-    pass
+    @handle_exception
+    def get(self, request):
+        return render(
+            request,
+            'register.html',
+        )
+
+    @handle_exception
+    def post(self, request):
+        """
+        DO NOT IMPLEMENT username unique check and email unique check!
+        """
+
+        data = request.POST
+
+        name = data.get('name')
+        username = data.get('username')
+        email = data.get('email')
+        password = data.get('password')
+
+        password_hashed = sha256_string(password)
+
+        user = SiteUser.objects.create(
+            name=name,
+            username=username,
+            email=email,
+            password=password_hashed,
+        )
+
+        return JsonResponse({
+            "message": "ok",
+        })
 
 
 class LoginView(View):

@@ -5,6 +5,7 @@ from django.views import View
 from utils.decorators import handle_exception
 from utils.utils import sha256_string
 
+from .db_query import get_user_by_username, validate_user_password
 from .models import SiteUser
 from .session_manager import add_user_to_session, get_user_in_session
 
@@ -59,7 +60,31 @@ class RegisterView(View):
 
 
 class LoginView(View):
-    pass
+    @handle_exception
+    def get(self, request):
+        return render(
+            request,
+            'login.html',
+        )
+
+    @handle_exception
+    def post(self, request):
+
+        data = request.POST
+
+        username_or_email = data.get('usernameOrEmail')
+        password = data.get('password')
+
+        password_hashed = sha256_string(password)
+
+        user = get_user_by_username(username_or_email)
+        validate_user_password(user, password_hashed)
+
+        add_user_to_session(request, user)
+
+        return JsonResponse({
+            "message": "ok",
+        })
 
 
 class LogoutView(View):

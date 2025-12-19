@@ -7,7 +7,8 @@ from utils.utils import sha256_string
 
 from .db_query import get_user_by_username, validate_user_password
 from .models import SiteUser
-from .session_manager import add_user_to_session, get_user_in_session
+from .session_manager import (add_user_to_session, get_user_in_session,
+                              remove_session_user)
 
 
 class HomeView(View):
@@ -88,4 +89,11 @@ class LoginView(View):
 
 
 class LogoutView(View):
-    pass
+    @handle_exception
+    def get(self, request):
+
+        remove_session_user(request)
+
+        return JsonResponse({
+            "message": "ok",
+        })

@@ -17,3 +17,7 @@ def get_user_in_session(request) -> SiteUser:
 
 def add_user_to_session(request, user: SiteUser):
     request.session['user_id'] = user.id
+
+
+def remove_session_user(request):
+    del request.session['user_id']

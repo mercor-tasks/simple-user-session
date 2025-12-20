@@ -1,3 +1,5 @@
+#### DO NOT IMPLEMENT ANY EXTRA VALIDATIONS OTHER THAN FOLLOWING MENTIONED ONES.
+
 #### Following things must be taken into accout while building the features.
 
 - When an user registers, if it's a successful registration, the user should automatically login to it's session.
